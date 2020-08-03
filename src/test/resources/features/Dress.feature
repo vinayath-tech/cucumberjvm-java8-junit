@@ -19,3 +19,11 @@ Feature: Display dresses
     Given I am on the detail page of the dress
     When I select "Yellow" color
     Then I should see 2 dresses available with yellow color
+
+  Scenario: Should have summer dress in stock
+    Then I should see atleast 2 Printed Summer Dress on popular section
+
+  @wip
+  Scenario: Add dresses less than 20 pounds to shopping cart
+    When I choose dress less than 20 pounds
+    Then a total of 1 dress should be added to the cart

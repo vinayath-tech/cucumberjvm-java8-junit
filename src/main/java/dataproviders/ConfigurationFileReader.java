@@ -23,6 +23,11 @@ public class ConfigurationFileReader {
        return driverNav;
     };
 
+    private Supplier<String> ffDriverPath = () -> {
+        String ffDriverNav = properties.getProperty("ffDriverPath");
+        return ffDriverNav;
+    };
+
     private Supplier<String> applicationUrl = () -> {
         String baseUrl = properties.getProperty("baseUrl");
         return baseUrl;
@@ -34,5 +39,9 @@ public class ConfigurationFileReader {
 
     public String getDriverPath() {
         return driverPath.get();
+    }
+
+    public String getFFDriverPath() {
+        return ffDriverPath.get();
     }
 }

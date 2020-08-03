@@ -10,9 +10,12 @@ import managers.PageObjectManager;
 import managers.WebDriverManager;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import pageObject.*;
+import org.openqa.selenium.WebElement;
+import pageObject.HomePage;
+import pageObject.ProductPage;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class DressStepsTest {
     WebDriver driver;
@@ -31,6 +34,8 @@ public class DressStepsTest {
         configFileReader = new ConfigurationFileReader();
     }
 
+    Predicate<? super WebElement> summerDress = (i) -> i.getText().contains("Printed Summer Dress");
+
     @Given("^I navigate to the dress categories$")
     public void i_navigate_to_the_dress_categories() throws Throwable {
         homePage.navigateToHomePage(configFileReader.getApplicationUrl());
@@ -38,7 +43,7 @@ public class DressStepsTest {
 
     @Then("^I should see the list of latest collections$")
     public void i_should_see_the_list_of_latest_collections() throws Throwable {
-        Assert.assertEquals(homePage.verifyDressList().size(), 7);
+        Assert.assertEquals(homePage.verifyDressList(), 7);
     }
 
     @When("^I view the \"(.*?)\"$")
@@ -65,6 +70,22 @@ public class DressStepsTest {
     @Then("^I should see (\\d+) dresses available with yellow color$")
     public void i_should_see_dresses_available_with_yellow_color(int arg1) throws Throwable {
         Assert.assertEquals(productPage.totImages(), 2);
+    }
+
+    @Then("^I should see atleast (\\d+) Printed Summer Dress on popular section$")
+    public void i_should_see_atleast_Printed_Summer_Dress_on_popular_section(int totDressCount) throws Throwable {
+        long actDressCount = homePage.checkDressAvailability(summerDress);
+        Assert.assertEquals(totDressCount, actDressCount);
+    }
+
+    @When("^I choose dress less than (\\d+) pounds$")
+    public void i_choose_dress_less_than_pounds(int prodPrice) throws Throwable {
+        homePage.fetchProdPrice(prodPrice);
+    }
+
+    @Then("^a total of (\\d+) dress should be added to the cart$")
+    public void a_total_of_dress_should_be_added_to_the_cart(int totDress) throws Throwable {
+        Assert.assertEquals(homePage.getProdTot(), Integer.toString(totDress));
     }
 
     @After
